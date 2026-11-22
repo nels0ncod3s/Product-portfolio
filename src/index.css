@@ -484,11 +484,12 @@ button {
 
 .section-heading h2 {
   font-family: var(--font-display);
-  /* "Selected work" is ~11.5em wide in Kana: one line on tablet and up,
-     wraps on small phones instead of overflowing. */
-  font-size: clamp(2.5rem, 7.6vw, 6.5rem);
+  /* "Selected work" is ~11.5em wide in Kana. The size is derived from the
+     container width, so it stretches across exactly one line at every screen
+     size (about 26px on a 375px phone) instead of wrapping. */
+  font-size: clamp(1.25rem, calc((100vw - var(--gutter) * 2) / 12.4), 6.5rem);
   font-weight: 400;
-  line-height: 1;
+  line-height: 1.1; /* only matters if it ever wraps: keeps the lines apart */
   letter-spacing: 0;
   text-wrap: balance;
 }
@@ -577,10 +578,13 @@ button {
 }
 
 .project-info h3 {
-  font-size: 26px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
+  font-family: var(--font-display);
+  /* Kana is wide and all-caps, so this stays small to avoid shouting. */
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 1.25;
+  margin-bottom: 4px;
 }
 
 .project-info p {

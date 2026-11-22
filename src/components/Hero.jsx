@@ -30,7 +30,7 @@ function Hero({ ready }) {
           </span>
         </span>
         <span className="line" aria-hidden="true">
-          <span style={{ '--d': 130 }}>Product Designer</span>
+          <span style={{ '--d': 130 }}>Design Engineer</span>
         </span>
       </h1>
 
