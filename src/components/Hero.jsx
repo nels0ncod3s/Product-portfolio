@@ -1,6 +1,6 @@
 // To show your photo: put it at src/assets/me.jpg, then uncomment the import
 // and set PHOTO = me. Until then a dashed placeholder holds the space.
-import me from '../assets/me.jpg';
+import me from '../assets/me.JPG';
 
 const PHOTO = me; // e.g. me
 
