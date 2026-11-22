@@ -37,14 +37,14 @@ export const about = {
   ],
 
   background: [
-    { title: 'softwarre engieering', note: 'University of Lagos, in progress' },
-    { title: 'Meta Front-End Developer Certificate', note: 'Certification' },
-    { title: 'Frontend intern', note: 'Junior role' },
+    { title: '', note: '' },
+    { title: '', note: '' },
+    { title: '', note: '' },
   ],
 
   now: [
-    { label: 'Building', value: 'First Layer, authentication for developers' },
-    { label: 'Learning', value: 'Go' },
-    { label: 'Writing', value: 'A JavaScript and TypeScript guide' },
+    { label: '', value: '' },
+    { label: '', value: '' },
+    { label: '', value: '' },
   ],
 };

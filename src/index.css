@@ -10,10 +10,9 @@
   font-display: block;
 }
 
-/* Script accent: Dancing Script (SIL Open Font License, fine for commercial use). */
 @font-face {
-  font-family: "Dancing Script";
-  src: url("./fonts/DancingScript.woff2") format("woff2");
+  font-family: "Autography";
+  src: url("./fonts/Autography.otf") format("opentype");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -51,7 +50,7 @@
 
 :root {
   --font: 'Funnel Display', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-script: 'Dancing Script', 'Segoe Script', cursive;
+  --font-script: 'Autography', 'Segoe Script', cursive;
   --font-display: 'Kana', 'Funnel Display', system-ui, sans-serif;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   --gutter: 24px;
