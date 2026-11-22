@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { about } from '../data/about';
-import { photo } from '../lib/photo';
+import { photo, fitRatio, usePhotoRatio } from '../lib/photo';
 
 // Labels for the index under the headline. Each `id` matches a block below.
 const SECTIONS = [
@@ -31,8 +31,12 @@ function Scrub({ as: Tag = 'span', text, className = '' }) {
   );
 }
 
-// Scroll-linked progress for every [data-scrub] element. Runs both directions,
-// so scrolling back up dims the text again.
+// Scroll-linked progress for every [data-scrub] element, driven by ONE reading
+// line across the screen. A block is lit from its top to its bottom as that line
+// passes over it, so the text is read strictly in order: a block cannot start
+// until the one before it has finished. Runs both ways (scroll up = dims again).
+const READING_LINE = 0.62; // fraction of the screen height, measured from the top
+
 function useScrubText(ref) {
   useLayoutEffect(() => {
     const root = ref.current;
@@ -49,13 +53,18 @@ function useScrubText(ref) {
 
     const update = () => {
       raf = 0;
-      const vh = window.innerHeight;
+      const line = window.innerHeight * READING_LINE;
+      let previousDone = true;
+
       els.forEach((el, k) => {
         const rect = el.getBoundingClientRect();
-        // 0 when the block's top is 85% down the screen; 1 when its bottom
-        // reaches 40% down the screen.
-        const p = (vh * 0.85 - rect.top) / (rect.height + vh * 0.45);
-        const v = Math.round(Math.min(1, Math.max(0, p)) * 500) / 500;
+        const raw = Math.min(1, Math.max(0, (line - rect.top) / rect.height));
+        // Guard for blocks side by side (like the facts grid): wait for the
+        // previous block in reading order to finish first.
+        const p = previousDone ? raw : 0;
+        if (raw < 1) previousDone = false;
+
+        const v = Math.round(p * 500) / 500;
         if (v !== last[k]) {
           last[k] = v;
           el.style.setProperty('--p', v);
@@ -132,6 +141,7 @@ function useAboutScroll() {
 
 function About() {
   const { ref, active } = useAboutScroll();
+  const photoRatio = fitRatio(usePhotoRatio(1), 0.75, 1.5);
 
   return (
     <section className="about-section" id="about" ref={ref}>
@@ -141,7 +151,7 @@ function About() {
           <div className="about-sticky">
             <p className="eyebrow">About</p>
 
-            <div className="about-photo rise">
+            <div className="about-photo rise" style={{ '--photo-ratio': photoRatio }}>
               {photo ? (
                 <img src={photo} alt="" loading="lazy" />
               ) : (

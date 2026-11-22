@@ -83,7 +83,10 @@ function Contact() {
             Available for work
           </p>
 
-          <h2>Let’s make something beautiful.</h2>
+          <h2>
+            <span className="h2-line">Let’s make</span>{' '}
+            <span className="h2-line">something beautiful.</span>
+          </h2>
 
           <p className="contact-lede">
             Have a project, a role or an idea in mind? Tell me about it

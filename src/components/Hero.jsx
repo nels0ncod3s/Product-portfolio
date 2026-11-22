@@ -1,8 +1,11 @@
 // The photo comes from src/assets/me.* (see src/lib/photo.js): just drop a file
 // named "me" in that folder. No code changes needed.
-import { photo as PHOTO } from '../lib/photo';
+import { photo as PHOTO, fitRatio, usePhotoRatio } from '../lib/photo';
 
 function Hero({ ready }) {
+  // The frame takes the photo's shape (kept between portrait-ish and wide).
+  const ratio = fitRatio(usePhotoRatio(1.6), 0.8, 1.9);
+
   return (
     <section className={`hero ${ready ? 'is-ready' : ''}`} id="home">
       <h1 className="hero-title" aria-label="Hi, I’m Nelson. Product Designer.">
@@ -10,7 +13,10 @@ function Hero({ ready }) {
           <span className="line-inline" style={{ '--d': 0 }}>
             <span>Hi</span>
             <span className="wave">👋</span>
-            <span className={`hero-photo ${PHOTO ? 'has-image' : ''}`}>
+            <span
+              className={`hero-photo ${PHOTO ? 'has-image' : ''}`}
+              style={{ '--photo-ratio': ratio }}
+            >
               {PHOTO ? (
                 <img src={PHOTO} alt="" />
               ) : (
@@ -24,7 +30,7 @@ function Hero({ ready }) {
           </span>
         </span>
         <span className="line" aria-hidden="true">
-          <span style={{ '--d': 130 }}>Design Engineer</span>
+          <span style={{ '--d': 130 }}>Product Designer</span>
         </span>
       </h1>
 

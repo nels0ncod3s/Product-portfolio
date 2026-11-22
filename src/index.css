@@ -377,9 +377,12 @@ button {
   flex: none;
   display: grid;
   place-items: center;
-  width: 1.55em;
-  height: 0.92em;
+  /* The height is fixed; the width follows the photo's shape (--photo-ratio is
+     set from the image in Hero.jsx), so the photo is not cropped to a preset shape. */
+  height: 0.95em;
+  width: calc(0.95em * var(--photo-ratio, 1.6));
   overflow: hidden;
+  transition: width 0.4s var(--ease);
   border: 2px dashed var(--faint);
   border-radius: 999px;
   background: var(--surface-2);
@@ -872,8 +875,11 @@ button {
 
 /* Photo above the headline. Square, so a square image isn't cropped. */
 .about-photo {
-  width: clamp(8.5rem, 12vw, 11rem);
-  aspect-ratio: 1 / 1;
+  /* Fixed height, width follows the photo (--photo-ratio, set in About.jsx). */
+  --ph: clamp(9rem, 12.5vw, 11.5rem);
+  height: var(--ph);
+  width: calc(var(--ph) * var(--photo-ratio, 1));
+  max-width: 100%;
   margin-bottom: 28px;
   overflow: hidden;
   border: 1px solid var(--line);
@@ -1498,6 +1504,20 @@ button {
   width: 1px;
   height: 1px;
   opacity: 0;
+}
+
+/* Single-column layout: put "Let's make" and "something beautiful." on their own
+   lines and size the text so the long line always fits the screen width.
+   ("something beautiful." is ~6.3em wide in Autography.) */
+@media (max-width: 900px) {
+  .contact-intro h2 {
+    font-size: clamp(2.5rem, calc((100vw - var(--gutter) * 2) / 6.6), 7rem);
+  }
+
+  .contact-intro h2 .h2-line {
+    display: block;
+    white-space: nowrap;
+  }
 }
 
 /* ---------- Footer ---------- */
