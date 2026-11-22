@@ -1,22 +1,45 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { site } from '../data/site';
 
 // Optional: set VITE_FORM_ENDPOINT (e.g. a Formspree URL) to send messages
 // straight from the form. Without it, the form opens the visitor's email app.
 const ENDPOINT = import.meta.env.VITE_FORM_ENDPOINT;
 
+// Clipboard API needs HTTPS; fall back to execCommand so it also works on plain http.
+async function copyText(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch {
+    try {
+      const el = document.createElement('textarea');
+      el.value = text;
+      el.setAttribute('readonly', '');
+      el.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+      document.body.appendChild(el);
+      el.select();
+      const ok = document.execCommand('copy');
+      document.body.removeChild(el);
+      return ok;
+    } catch {
+      return false;
+    }
+  }
+}
+
 function Contact() {
   const [status, setStatus] = useState('idle'); // idle | sending | sent | mailto | error
   const [copied, setCopied] = useState(false);
 
+  const timer = useRef(null);
+  useEffect(() => () => clearTimeout(timer.current), []);
+
   const copyEmail = async () => {
-    try {
-      await navigator.clipboard.writeText(site.email);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      /* clipboard blocked: the email is still a visible mailto link */
-    }
+    const ok = await copyText(site.email);
+    if (!ok) return; // clipboard blocked: the email is still a visible mailto link
+    setCopied(true);
+    clearTimeout(timer.current);
+    timer.current = setTimeout(() => setCopied(false), 2000);
   };
 
   const handleSubmit = async (event) => {
@@ -71,9 +94,24 @@ function Contact() {
             <a href={`mailto:${site.email}`} className="contact-email">
               {site.email}
             </a>
-            <button type="button" className="copy-btn" onClick={copyEmail}>
-              {copied ? 'Copied' : 'Copy email'}
+            <button
+              type="button"
+              className={`copy-btn ${copied ? 'is-copied' : ''}`}
+              onClick={copyEmail}
+              aria-label="Copy email address"
+              title={copied ? 'Copied' : 'Copy email'}
+            >
+              <svg className="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <rect x="9" y="9" width="11" height="11" rx="2.5" />
+                <path d="M5 15V6.5A2.5 2.5 0 0 1 7.5 4H15" />
+              </svg>
+              <svg className="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M5 12.5 10 17.5 19 7" />
+              </svg>
             </button>
+            <span className="visually-hidden" role="status" aria-live="polite">
+              {copied ? 'Email address copied to clipboard' : ''}
+            </span>
           </div>
 
           {socials.length > 0 && (

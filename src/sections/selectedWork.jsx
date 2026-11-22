@@ -1,37 +1,57 @@
 import ProjectPlaceholder from '../components/ProjectPlaceholder';
+import zobo from '../assets/work/zobo.JPG';
+import firstLayer from '../assets/work/firstLayer.JPG';
+import routly from '../assets/work/Routly.JPG';
+import naira from '../assets/work/naira.JPG';
+import tix from '../assets/work/tix.JPG';
 
-// To swap in real screenshots: drop them in src/assets/work/, import them here,
-// and set `image` (and `alt`). Add `href` to make the whole card a link.
 const projects = [
+  {
+    name: 'Buy Me Zobo',
+    description: 'Helping creators receive support from their audience.',
+    tags: ['Fintech', 'creators'],
+    kind: 'profile',
+    image: zobo,
+    alt: '',
+    href: 'https://buyymezobo.vercel.app/',
+  },
   {
     name: 'First Layer',
     description: 'Making authentication simpler for developers.',
-    tags: ['Developer tools', 'Product design'],
-    year: '2026',
+    tags: ['Developer tools', 'Authenticaton'],
     kind: 'dashboard',
-    image: null,
-    alt: '',
-    href: null,
+    image: firstLayer,
+    alt: 'first layer dashboard',
+    href: 'https://usefirstlayer.vercel.app/',
   },
   {
     name: 'Routly',
     description: 'A better way to plan and navigate journeys.',
-    tags: ['Travel', 'Product design'],
-    year: '2026',
+    tags: ['Travel', 'Navigation'],
     kind: 'landing',
-    image: null,
+    image: routly,
     alt: '',
-    href: null,
+    href: 'https://useroutly.vercel.app/',
   },
   {
-    name: 'Buy Me Zobo',
-    description: 'Helping creators receive support from their audience.',
-    tags: ['Fintech', 'Product design'],
-    year: '2026',
-    kind: 'profile',
-    image: null,
+    
+    name: 'Naira Savvy',
+    description: 'A better way to plan and manage money.',
+    tags: ['News', 'Finance'],
+    kind: 'landing',
+    image: naira,
     alt: '',
-    href: null,
+    href: 'https://nairasavvy-mu.vercel.app/',
+  },
+  {
+    
+    name: 'Tix',
+    description: 'Your home for event ticketing',
+    tags: ['Events', 'Tickets'],
+    kind: 'landing',
+    image: tix,
+    alt: '',
+    href: 'https://tix-ten.vercel.app/',
   },
 ];
 
@@ -84,7 +104,6 @@ function SelectedWork() {
       <div className="container">
         <div className="section-heading">
           <h2>Selected work</h2>
-          <p>2025 – 2026</p>
         </div>
 
         <div className="work-grid">

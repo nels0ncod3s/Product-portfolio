@@ -23,18 +23,22 @@ const year = new Date().getFullYear();
 function Footer() {
   return (
     <footer className="footer">
-      <div className="container footer-inner">
-        <p>© {year} {site.name}</p>
+      <div className="container footer-wrap">
+        <p className="footer-wordmark" aria-hidden="true">{site.name}</p>
 
-        <nav className="footer-links" aria-label="Footer">
-          <a href="#work">Work</a>
-          <a href="#about">About</a>
-          <a href="#contact">Contact</a>
-        </nav>
+        <div className="footer-inner">
+          <p>© {year} {site.name}</p>
 
-        <div className="footer-end">
-          <LocalTime />
-          <a href="#home">Back to top</a>
+          <nav className="footer-links" aria-label="Footer">
+            <a href="#work">Work</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+          </nav>
+
+          <div className="footer-end">
+            <LocalTime />
+            <a href="#home">Back to top</a>
+          </div>
         </div>
       </div>
     </footer>
