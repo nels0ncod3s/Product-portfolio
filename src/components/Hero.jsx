@@ -1,8 +1,6 @@
-// To show your photo: put it at src/assets/me.jpg, then uncomment the import
-// and set PHOTO = me. Until then a dashed placeholder holds the space.
-import me from '../assets/me.JPG';
-
-const PHOTO = me; // e.g. me
+// The photo comes from src/assets/me.* (see src/lib/photo.js): just drop a file
+// named "me" in that folder. No code changes needed.
+import { photo as PHOTO } from '../lib/photo';
 
 function Hero({ ready }) {
   return (
@@ -26,7 +24,7 @@ function Hero({ ready }) {
           </span>
         </span>
         <span className="line" aria-hidden="true">
-          <span style={{ '--d': 130 }}>Product Designer</span>
+          <span style={{ '--d': 130 }}>Design Engineer</span>
         </span>
       </h1>
 

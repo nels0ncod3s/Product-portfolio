@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 import Preloader from './components/Preloader';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
+import StackMarquee from './components/StackMarquee';
 import Footer from './components/Footer';
 import SelectedWork from './sections/selectedWork';
 import About from './sections/About';
@@ -24,6 +25,7 @@ function App() {
 
       <main>
         <Hero ready={ready} />
+        <StackMarquee />
         <SelectedWork />
         <About />
         <Contact />

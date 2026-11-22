@@ -15,7 +15,7 @@ export const about = {
     { label: 'Based in', value: 'Lagos, Nigeria' },
     { label: 'Role', value: 'Designer & developer' },
     { label: 'Focus', value: 'Developer tools & SaaS' },
-    { label: 'Studying', value: 'Computer Science, University of Lagos' },
+    { label: 'Studying', value: 'Software Engineering, Miva' },
   ],
 
   pillars: [
@@ -27,7 +27,7 @@ export const about = {
     {
       title: 'Build',
       text: 'Fast, accessible frontends and the APIs behind them, from the component down to the database.',
-      tags: ['React', 'SvelteKit', 'Tailwind', 'Node.js', 'Fastify', 'FastAPI', 'Supabase'],
+      tags: ['React', 'SvelteKit', 'Tailwind', 'Node.js', 'FastAPI', 'Supabase'],
     },
     {
       title: 'Ship',
@@ -37,14 +37,14 @@ export const about = {
   ],
 
   background: [
-    { title: '', note: '' },
-    { title: '', note: '' },
-    { title: '', note: '' },
+    { title: 'Software Engineering', note: 'Miva Open University, in progress' },
+    { title: 'Meta Front-End Developer Certificate', note: 'Certification' },
+    { title: 'Frontend intern', note: 'Junior role' },
   ],
 
   now: [
-    { label: '', value: '' },
-    { label: '', value: '' },
-    { label: '', value: '' },
+    { label: 'Building', value: 'First Layer, authentication for developers' },
+    { label: 'Learning', value: 'Go' },
+    { label: 'Writing', value: 'A JavaScript and TypeScript guide' },
   ],
 };
