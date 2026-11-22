@@ -1,14 +1,20 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { about } from '../data/about';
 import { photo, fitRatio, usePhotoRatio } from '../lib/photo';
+import { cvs } from '../lib/cv';
 
 // Labels for the index under the headline. Each `id` matches a block below.
+// The CV block shows once a PDF is in src/assets/cv/ (and, while you are
+// developing, as an empty reminder so you can see where it goes).
+const SHOW_CV = cvs.length > 0 || import.meta.env.DEV;
+
 const SECTIONS = [
   { id: 'story', label: 'Story' },
   { id: 'glance', label: 'At a glance' },
   { id: 'do', label: 'What I do' },
   { id: 'background', label: 'Background' },
   { id: 'now', label: 'Currently' },
+  ...(SHOW_CV ? [{ id: 'cv', label: 'CV' }] : []),
 ];
 
 const prefersReducedMotion = () =>
@@ -240,6 +246,38 @@ function About() {
               ))}
             </ul>
           </div>
+
+          {SHOW_CV && (
+            <div className="about-block" id="about-cv" data-spy="cv">
+              <h3 className="list-heading">CV</h3>
+              {cvs.length > 0 ? (
+                <ul className="cv-list">
+                  {cvs.map(({ url, file, label }) => (
+                    <li key={file}>
+                      <div className="cv-info">
+                        <span>{label}</span>
+                        <small>PDF</small>
+                      </div>
+                      <div className="cv-actions">
+                        <a className="cv-btn" href={url} target="_blank" rel="noreferrer">
+                          View
+                        </a>
+                        <a className="cv-btn is-primary" href={url} download={file}>
+                          Download
+                        </a>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="cv-empty">
+                  Only you see this while developing. Drop one or more PDFs into{' '}
+                  <code>src/assets/cv/</code> and they appear here for everyone. With no
+                  CV added, this whole block is hidden on the live site.
+                </p>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </section>

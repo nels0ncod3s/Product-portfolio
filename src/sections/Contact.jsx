@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { site } from '../data/site';
+import { cvs } from '../lib/cv';
 
 // Optional: set VITE_FORM_ENDPOINT (e.g. a Formspree URL) to send messages
 // straight from the form. Without it, the form opens the visitor's email app.
@@ -117,7 +118,7 @@ function Contact() {
             </span>
           </div>
 
-          {socials.length > 0 && (
+          {(socials.length > 0 || cvs.length > 0) && (
             <ul className="socials">
               {socials.map(({ label, href }) => (
                 <li key={label}>
@@ -126,6 +127,18 @@ function Contact() {
                   </a>
                 </li>
               ))}
+              {cvs.length > 0 && (
+                <li>
+                  {/* One CV downloads straight away; several jump to the CV list. */}
+                  {cvs.length === 1 ? (
+                    <a href={cvs[0].url} download={cvs[0].file}>
+                      CV
+                    </a>
+                  ) : (
+                    <a href="#about-cv">CV</a>
+                  )}
+                </li>
+              )}
             </ul>
           )}
         </div>

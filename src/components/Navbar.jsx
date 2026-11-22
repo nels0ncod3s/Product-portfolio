@@ -65,7 +65,7 @@ function Navbar({ ready }) {
     >
       <div className="nav-inner">
       <a href="#home" className="nav-logo">
-        Nelson Wey.
+        Nelson Wey
       </a>
 
       <nav className="nav-pill" aria-label="Primary">

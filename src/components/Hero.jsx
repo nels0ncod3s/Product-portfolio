@@ -8,7 +8,7 @@ function Hero({ ready }) {
 
   return (
     <section className={`hero ${ready ? 'is-ready' : ''}`} id="home">
-      <h1 className="hero-title" aria-label="Hi, I’m Nelson. Product Designer.">
+      <h1 className="hero-title" aria-label="Hi, I’m Nelson. Design Engineer.">
         <span className="line" aria-hidden="true">
           <span className="line-inline" style={{ '--d': 0 }}>
             <span>Hi</span>

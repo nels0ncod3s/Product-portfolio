@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import './Preloader.css';
+import { markPreloaderSeen } from '../lib/preload';
 
-const MIN_DURATION = 1400; // shortest the counter will run
+const MIN_DURATION = 1000; // shortest the counter will run
 const EXIT_MS = 1200; // curtain transition (900ms + stagger) plus a small buffer
 
 function Preloader({ onReveal, onDone }) {
@@ -29,6 +30,7 @@ function Preloader({ onReveal, onDone }) {
       Promise.all([
         document.fonts.load('800 64px "Funnel Display"'),
         document.fonts.load('400 16px "Funnel Display"'),
+        document.fonts.load('400 64px "Kana"'), // the hero headline
       ]),
       new Promise((resolve) => setTimeout(resolve, 2500)),
     ]).then(() => {
@@ -41,6 +43,7 @@ function Preloader({ onReveal, onDone }) {
     const start = performance.now();
 
     const finish = () => {
+      markPreloaderSeen();
       setExiting(true);
       onReveal();
       doneTimer = setTimeout(onDone, EXIT_MS);
@@ -54,7 +57,7 @@ function Preloader({ onReveal, onDone }) {
       setCount(Math.round(shown * 100));
 
       if (t >= 1 && fontsReady) {
-        holdTimer = setTimeout(finish, 250);
+        holdTimer = setTimeout(finish, 150);
         return;
       }
       frame = requestAnimationFrame(tick);

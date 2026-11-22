@@ -1,8 +1,6 @@
 @font-face {
   font-family: "Kana";
-  src:
-    url("./fonts/Kana.woff2") format("woff2"),
-    url("./fonts/Kana.ttf") format("truetype");
+  src: url("./fonts/Kana.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
   /* Kana is far wider than Funnel Display, so a swap would make the
@@ -15,9 +13,7 @@
    license before using it on a commercial or client-facing site. */
 @font-face {
   font-family: "Autography";
-  src:
-    url("./fonts/Autography.woff2") format("woff2"),
-    url("./fonts/Autography.otf") format("opentype");
+  src: url("./fonts/Autography.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -510,11 +506,13 @@ button {
 }
 
 .project {
+  position: relative; /* the title link's ::after stretches over the whole card */
   display: block;
   --grow: 1; /* set by useScrollGrow in selectedWork.jsx; 1 = full size */
 }
 
-.project:first-child {
+.project:first-child,
+.project.is-wide {
   grid-column: 1 / -1;
 }
 
@@ -564,9 +562,91 @@ button {
 }
 
 .project.is-link:hover .project-arrow,
-.project.is-link:focus-visible .project-arrow {
+.project:has(.project-link:focus-visible) .project-arrow {
   opacity: 1;
   transform: none;
+}
+
+.project-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.project-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 28px;
+}
+
+.project-link:focus-visible {
+  outline: none;
+}
+
+.project-link:focus-visible::after {
+  outline: 2px solid var(--fg);
+  outline-offset: 6px;
+}
+
+.case-btn {
+  position: relative; /* sits above the stretched link */
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 9px 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--fg);
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.case-btn:hover {
+  border-color: var(--fg);
+  background: var(--surface);
+}
+
+.case-btn svg {
+  transition: transform 0.3s var(--ease);
+}
+
+.case-btn:hover svg {
+  transform: translateX(3px);
+}
+
+/* Projects with no live link: the case-study button covers the whole card. */
+.case-btn.is-stretched {
+  position: static;
+  z-index: auto;
+}
+
+.case-btn.is-stretched::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 28px;
+  cursor: pointer;
+}
+
+.case-btn.is-stretched:focus-visible {
+  outline: none;
+}
+
+.case-btn.is-stretched:focus-visible::after {
+  outline: 2px solid var(--fg);
+  outline-offset: 6px;
+}
+
+.project.is-case-link:hover .case-btn {
+  border-color: var(--fg);
+  background: var(--surface);
 }
 
 .project-info {
@@ -851,6 +931,435 @@ button {
   font-size: 13px;
   font-weight: 500;
   color: var(--faint);
+}
+
+/* ---------- Phone frames (mobile projects) ---------- */
+.phones {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: clamp(10px, 2.4vw, 32px);
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 115%, color-mix(in srgb, var(--fg) 9%, transparent), transparent 62%),
+    var(--surface);
+}
+
+.phone {
+  position: relative;
+  flex: none;
+  height: 90%;
+  aspect-ratio: 9 / 19.5;
+  margin-bottom: -7%; /* phones bleed off the bottom edge */
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: clamp(14px, 2.4vw, 34px);
+  background: var(--bg);
+  box-shadow: 0 24px 60px rgb(0 0 0 / 0.28);
+  transition: transform 0.7s var(--ease);
+}
+
+.phone:nth-child(2),
+.phone:only-child {
+  height: 98%;
+  margin-bottom: -5%;
+}
+
+.project:hover .phone {
+  transform: translateY(-8px);
+}
+
+.phone img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+/* The centre phone is the hero: it sits in front of the other two. */
+.phone:nth-child(2) {
+  z-index: 2;
+}
+
+/* Small screens: the wide 2.11:1 frame would shrink three phones to thumbnails.
+   Make the frame taller and tuck the side phones behind the centre one so all
+   three stay big enough to read. */
+@media (max-width: 760px) {
+  .project .project-frame:has(.phones),
+  .case .case-phones {
+    aspect-ratio: 1.5 / 1;
+  }
+
+  .phones {
+    gap: 0;
+  }
+
+  .phone + .phone {
+    margin-left: -9%;
+  }
+
+  .phone:nth-child(1):not(:only-child),
+  .phone:nth-child(3) {
+    height: 88%;
+  }
+
+  .phone:nth-child(2) {
+    box-shadow: 0 16px 40px rgb(0 0 0 / 0.32);
+  }
+}
+
+@media (max-width: 560px) {
+  .project .project-frame:has(.phones),
+  .case .case-phones {
+    aspect-ratio: 1.12 / 1;
+  }
+}
+
+/* Wireframe screens, used until real screenshots are added. */
+.ps {
+  position: absolute;
+  inset: 0;
+}
+
+.ps b,
+.ps i {
+  display: block;
+  border-radius: 8px;
+  background: var(--sk);
+}
+
+.ps-grid {
+  padding: 16% 9% 0;
+}
+
+.ps-grid .ps-title {
+  width: 46%;
+  height: 7px;
+  margin-bottom: 14%;
+  background: var(--sk-strong);
+}
+
+.ps-grid > div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8%;
+}
+
+.ps-grid > div i {
+  aspect-ratio: 1;
+  border-radius: 10px;
+}
+
+.ps-map {
+  background: var(--sk);
+}
+
+.ps-pin {
+  position: absolute;
+  width: 11%;
+  aspect-ratio: 1;
+  border: 2px solid var(--bg);
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  background: var(--sk-strong) !important;
+}
+
+.ps-pin.is-drop {
+  width: 15%;
+  background: var(--fg) !important;
+  box-shadow: 0 0 0 7px color-mix(in srgb, var(--fg) 16%, transparent);
+}
+
+.ps-sheet {
+  position: absolute;
+  inset: auto 6% 5% 6%;
+  height: 17%;
+  border-radius: 14px !important;
+  background: var(--bg) !important;
+  border: 1px solid var(--line);
+}
+
+.ps-cam {
+  background: var(--sk-strong);
+}
+
+.ps-shutter {
+  position: absolute;
+  left: 50%;
+  bottom: 7%;
+  width: 22%;
+  aspect-ratio: 1;
+  border: 3px solid var(--bg);
+  border-radius: 50% !important;
+  transform: translateX(-50%);
+  background: transparent !important;
+}
+
+.case-phones {
+  position: relative;
+  aspect-ratio: 2.11 / 1;
+  margin-top: 40px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+}
+
+/* ---------- CV list ---------- */
+.cv-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 24px;
+  padding-block: 20px;
+  border-bottom: 1px solid var(--line);
+}
+
+.cv-info {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  min-width: 0;
+}
+
+.cv-info span {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.cv-info small {
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: var(--faint);
+}
+
+.cv-actions {
+  display: flex;
+  flex: none;
+  gap: 10px;
+}
+
+.cv-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 9px 18px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--fg);
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.cv-btn:hover {
+  border-color: var(--fg);
+}
+
+.cv-btn.is-primary {
+  border-color: transparent;
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+}
+
+.cv-empty {
+  padding-top: 20px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--faint);
+}
+
+.cv-empty code {
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: var(--surface-2);
+  font-size: 0.9em;
+}
+
+@media (max-width: 480px) {
+  .cv-list li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* ---------- Case study dialog ---------- */
+html:has(dialog.case[open]) {
+  overflow: hidden; /* lock the page behind the dialog */
+}
+
+.case {
+  width: min(920px, calc(100% - 32px));
+  max-height: min(92dvh, 1000px);
+  margin: auto;
+  padding: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+.case::backdrop {
+  background: rgb(0 0 0 / 0.65);
+  backdrop-filter: blur(6px);
+}
+
+.case[open] {
+  animation: case-in 0.45s var(--ease);
+}
+
+@keyframes case-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.98);
+  }
+}
+
+.case-inner {
+  padding: clamp(28px, 5vw, 64px);
+}
+
+.case-close {
+  position: sticky;
+  top: 12px;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin: 0 0 -44px auto; /* overlaps the header instead of taking a row */
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--bg);
+  color: var(--fg);
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.case-close:hover {
+  border-color: var(--fg);
+}
+
+.case-head h2 {
+  max-width: calc(100% - 56px); /* keeps clear of the close button */
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 4.6vw, 3.25rem);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: 0;
+}
+
+.case-head .eyebrow {
+  margin-bottom: 20px;
+}
+
+.case-tagline {
+  margin-top: 16px;
+  font-size: clamp(1.0625rem, 1.8vw, 1.375rem);
+  color: var(--muted);
+}
+
+.case-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 24px;
+  margin-top: 32px;
+  padding-block: 24px;
+  border-block: 1px solid var(--line);
+}
+
+.case-meta dt {
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--faint);
+}
+
+.case-meta dd {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.case-meta a {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.case-image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2.11 / 1;
+  margin-top: 40px;
+  object-fit: cover;
+  object-position: top center;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+}
+
+.case-body {
+  margin-top: 48px;
+}
+
+.case-body section + section {
+  margin-top: 40px;
+}
+
+.case-body h3 {
+  padding-bottom: 14px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.case-body p,
+.case-body li {
+  font-size: 18px;
+  line-height: 1.65;
+  color: var(--muted);
+}
+
+.case-body p + p {
+  margin-top: 16px;
+}
+
+.case-body ul {
+  display: grid;
+  gap: 14px;
+}
+
+.case-body li {
+  position: relative;
+  padding-left: 22px;
+}
+
+.case-body li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.7em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--faint);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .case[open] {
+    animation: none;
+  }
 }
 
 /* ---------- About ---------- */
@@ -1743,6 +2252,8 @@ button {
     transition: none;
   }
 
+  .phone,
+  .case-btn svg,
   .nav-indicator,
   .ph-window,
   .project-frame img,

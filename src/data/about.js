@@ -6,7 +6,7 @@ export const about = {
   headline: 'I design it, then I build it.',
 
   intro: [
-    'I’m Nelson, a designer and developer based in Lagos. I’m studying computer science, and most of my time goes into building products on my own, from the first sketch of the interface to the last deploy.',
+    'I’m Nelson, a designer and developer based in Lagos. I’m studying software engineering, and most of my time goes into building products on my own, from the first sketch of the interface to the last deploy.',
     'My projects start with problems I can see around me: authentication that costs developers weeks, payment webhooks that are painful to debug, creators who need a simple way to be supported. I build for Nigerian and African markets because that’s where I live, and I want the tools to fit how things actually work here.',
     'Doing design and engineering together means nothing gets lost in a handoff. I care about how a product feels in its first ten seconds, and how it behaves when something goes wrong.',
   ],
@@ -27,7 +27,7 @@ export const about = {
     {
       title: 'Build',
       text: 'Fast, accessible frontends and the APIs behind them, from the component down to the database.',
-      tags: ['React', 'SvelteKit', 'Tailwind', 'Node.js', 'FastAPI', 'Supabase'],
+      tags: ['React', 'React Native', 'SvelteKit', 'Tailwind', 'Node.js', 'FastAPI', 'Supabase'],
     },
     {
       title: 'Ship',
