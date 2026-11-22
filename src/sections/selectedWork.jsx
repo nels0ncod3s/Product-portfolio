@@ -5,6 +5,7 @@ import firstLayer from '../assets/work/firstLayer.JPG';
 import routly from '../assets/work/Routly.JPG';
 import naira from '../assets/work/naira.JPG';
 import tix from '../assets/work/tix.JPG';
+import revolv from '../assets/work/revolv.jpg';
 
 const projects = [
   {
@@ -53,6 +54,15 @@ const projects = [
     image: tix,
     alt: 'Tix landing page: “Every ticket. Every city. One tap away.”',
     href: 'https://tix-ten.vercel.app/',
+  },
+  {
+    name: 'Revolv',
+    description: 'Subscription management made easy',
+    tags: ['Subscriptions', 'Finance'],
+    kind: 'mobile',
+    image: revolv,
+    alt: 'Revolv: mobile look',
+    href: 'https://userevolv.vercel.app/',
   },
 ];
 

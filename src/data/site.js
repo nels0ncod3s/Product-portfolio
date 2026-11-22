@@ -8,6 +8,6 @@ export const site = {
   socials: [
     { label: 'GitHub', href: 'https://github.com/nels0ncod3s' }, // check this handle
     { label: 'X', href: 'https://x.com/heynelsonwey' },
-    { label: 'LinkedIn', href: '' },
+    { label: 'Resume', href: 'https://drive.google.com/file/d/1BH_wGeX6FU77MBbMs8xJRlVZe9P60URU/view?usp=sharing' },
   ],
 };
