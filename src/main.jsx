@@ -6,6 +6,9 @@ import '@fontsource/funnel-display/700.css';
 import '@fontsource/funnel-display/800.css';
 import App from './App.jsx';
 import './index.css';
+import { setupHead } from './lib/head';
+
+setupHead();
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

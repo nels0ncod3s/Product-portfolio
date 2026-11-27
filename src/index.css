@@ -351,10 +351,18 @@ button {
 
 .wave {
   display: inline-block;
-  font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
   font-size: 0.8em;
   line-height: 1;
   transform-origin: 70% 75%;
+}
+
+/* The wave is an image (the iOS emoji), so it looks the same on every device.
+   Width is in em: change 1.1em to make it bigger or smaller. */
+.wave img {
+  display: block;
+  width: 1.1em;
+  height: auto;
+  user-select: none;
 }
 
 .hero.is-ready .wave {
@@ -478,6 +486,7 @@ button {
   margin-bottom: 56px;
 }
 
+.section-heading h1,
 .section-heading h2 {
   font-family: var(--font-display);
   /* "Selected work" is ~11.5em wide in Kana. The size is derived from the
@@ -496,6 +505,176 @@ button {
   font-weight: 500;
   color: var(--faint);
   white-space: nowrap;
+}
+
+/* ---------- Work: home fan ---------- */
+/* The home section is one screen, like the hero: heading, fan and button sit
+   together and are centred in the viewport. The card size follows the screen's
+   height as well as its width, so it all fits on short laptop screens. */
+.work-section.work-home {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-block: 88px 32px; /* top clears the floating nav */
+}
+
+/* Centred and a good deal smaller than the other section headings, so the
+   cards get the room. Capped by height too, for short screens. */
+.work-home .section-heading {
+  justify-content: center;
+  text-align: center;
+  margin-bottom: clamp(16px, 3svh, 36px);
+}
+
+.work-home .section-heading h2 {
+  font-size: clamp(1rem, min(calc((100vw - var(--gutter) * 2) / 34), 4.5svh), 2.4rem);
+}
+
+.fan {
+  --chrome: 262px; /* heading, button and padding; the caption adds more (below) */
+  --card: clamp(110px, min(23.5vw, 400px, calc((100svh - var(--chrome)) / 1.38)), 400px);
+  --reach: 0.45; /* how far the cards spread, in card widths */
+  --spread: 1; /* set by useFanSpread: 0 = stacked, 1 = fully fanned */
+  position: relative;
+  height: calc(var(--card) * 1.38);
+  margin-bottom: clamp(16px, 3svh, 36px);
+}
+
+.fan-card {
+  position: absolute;
+  left: 50%;
+  top: calc(var(--card) * 0.06);
+  width: var(--card);
+  aspect-ratio: 1 / 1.12;
+  /* --i is -2...2 from the left, --d its distance from the centre. Cards drift
+     apart, tilt, drop into an arc and shrink the further they sit from the middle. */
+  transform:
+    translateX(calc(-50% + var(--i) * var(--card) * (0.28 + var(--reach) * var(--spread))))
+    translateY(calc(var(--d) * var(--d) * var(--card) * 0.055 * var(--spread)))
+    rotate(calc(var(--i) * 6.5deg * var(--spread)))
+    scale(calc(1 - var(--d) * 0.07 * var(--spread)));
+  z-index: calc(10 - var(--d));
+  will-change: transform;
+}
+
+.fan-card-inner {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border: 2px solid var(--fg); /* white on dark, black on light */
+  border-radius: 26px;
+  background: var(--surface);
+  transition: transform 0.6s var(--ease);
+}
+
+.fan-card-inner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: left top; /* screenshots are wide: keep the headline side */
+  filter: brightness(calc(1 - var(--d) * 0.12));
+  transition: filter 0.4s ease;
+}
+
+.fan-info {
+  display: none; /* phones only, see the 560px block */
+}
+
+@media (hover: hover) {
+  .fan-card:hover .fan-card-inner {
+    transform: translateY(-14px);
+  }
+
+  .fan-card:hover .fan-card-inner img {
+    filter: brightness(1);
+  }
+}
+
+.fan-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  text-align: center;
+}
+
+.fan-cta p {
+  font-size: 17px;
+  color: var(--muted);
+  text-wrap: balance;
+}
+
+/* Pill with a round arrow chip, like the reference. */
+.btn-arrow {
+  gap: 16px;
+  padding: 7px 7px 7px 30px;
+  font-size: 17px;
+}
+
+.btn-arrow-chip {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--btn-fg);
+  color: var(--btn-bg);
+  transition: transform 0.4s var(--ease);
+}
+
+.btn-arrow:hover .btn-arrow-chip {
+  transform: translateX(3px);
+}
+
+/* Taller screens show the caption, which needs a little more room. */
+@media (min-height: 861px) and (min-width: 561px) {
+  .fan {
+    --chrome: 310px;
+  }
+}
+
+/* Shorter screens: drop the caption so everything still fits. */
+@media (max-height: 860px) and (min-width: 561px) {
+  .fan-cta p {
+    display: none;
+  }
+}
+
+/* ---------- Work page ---------- */
+.work-section.work-page {
+  min-height: 100vh;
+  padding-top: 40px; /* no nav on this page */
+  border-top: 0;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 36px;
+  padding: 10px 18px 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--fg);
+  transition:
+    background-color 0.2s ease,
+    transform 0.3s var(--ease);
+}
+
+.back-link svg {
+  transition: transform 0.3s var(--ease);
+}
+
+.back-link:hover svg {
+  transform: translateX(-3px);
+}
+
+.back-link:hover {
+  background: var(--surface);
 }
 
 /* ---------- Work ---------- */
@@ -2105,6 +2284,14 @@ html:has(dialog.case[open]) {
     padding-block: 88px;
   }
 
+  .work-section.work-home {
+    padding-block: 104px 48px;
+  }
+
+  .work-section.work-page {
+    padding-top: 32px;
+  }
+
   .work-grid {
     grid-template-columns: 1fr;
     gap: 56px;
@@ -2154,12 +2341,149 @@ html:has(dialog.case[open]) {
     --gutter: 18px;
   }
 
+  /* Phones: the fan becomes a swipeable carousel. One card sits in focus with
+     its neighbours peeking in from both sides; swipe, or tap a dot. */
+  .work-section.work-home {
+    padding-block: 84px 28px;
+  }
+
+  .work-home .section-heading {
+    margin-bottom: 20px;
+  }
+
+  .work-home .section-heading h2 {
+    font-size: clamp(1rem, calc((100vw - var(--gutter) * 2) / 19), 3rem);
+  }
+
+  .fan {
+    --cw: clamp(150px, min(72vw, 300px, calc((100svh - 340px) / 1.12)), 300px);
+    display: flex;
+    gap: 14px;
+    height: auto;
+    /* Break out of the container so the row runs edge to edge; the padding
+       lets the first and last card reach the centre. */
+    margin: 0 calc(50% - 50vw) 8px;
+    padding: 6px calc((100vw - var(--cw)) / 2) 14px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .fan::-webkit-scrollbar {
+    display: none;
+  }
+
+  .fan-card {
+    position: relative;
+    left: auto;
+    top: auto;
+    flex: 0 0 var(--cw);
+    width: var(--cw);
+    aspect-ratio: 1 / 1.12;
+    scroll-snap-align: center;
+    z-index: auto;
+    will-change: auto;
+    transform: scale(calc(0.9 + 0.1 * var(--near, 1)));
+    opacity: calc(0.5 + 0.5 * var(--near, 1));
+  }
+
+  .fan-card-inner {
+    border-radius: 20px;
+  }
+
+  .fan-card-inner img {
+    filter: none;
+  }
+
+  .fan-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    margin-bottom: 22px;
+    text-align: center;
+  }
+
+  .fan-info h3 {
+    font-size: 19px;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .fan-info p {
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .fan-dots {
+    display: flex;
+    gap: 2px;
+    margin-top: 10px;
+  }
+
+  .fan-dots button {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    border: 0;
+    background: none;
+    padding: 0;
+  }
+
+  .fan-dots button::before {
+    content: '';
+    position: absolute;
+    inset: 7px;
+    border-radius: 999px;
+    background: var(--faint);
+    opacity: 0.55;
+    transition:
+      inset 0.3s var(--ease),
+      opacity 0.3s ease;
+  }
+
+  .fan-dots button.is-active::before {
+    inset: 6px 3px;
+    opacity: 1;
+    background: var(--fg);
+  }
+
+  .fan-cta p {
+    display: none; /* the caption above the button is replaced by .fan-info */
+  }
+
+  .fan-cta {
+    gap: 0;
+  }
+
+  .btn.btn-arrow {
+    gap: 12px;
+    padding: 5px 5px 5px 22px;
+    font-size: 15px;
+  }
+
+  .btn-arrow-chip {
+    width: 36px;
+    height: 36px;
+  }
+
+  .btn-arrow-chip svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .work-section.work-page {
+    padding-top: 24px;
+  }
+
   .nav {
     top: 12px;
   }
 
   .nav-links a {
-    padding: 10px 15px;
+    padding: 10px 12px;
     font-size: 15px;
   }
 
@@ -2195,6 +2519,25 @@ html:has(dialog.case[open]) {
   .contact-form {
     padding: 22px;
     border-radius: 22px;
+  }
+}
+
+/* Very small phones: keep the four nav links inside the screen. */
+@media (max-width: 400px) {
+  .nav-links a {
+    padding: 9px 9px;
+    font-size: 14px;
+  }
+
+  .nav-pill {
+    gap: 2px;
+  }
+}
+
+@media (max-width: 340px) {
+  .nav-links a {
+    padding: 9px 6px;
+    font-size: 13.5px;
   }
 }
 
@@ -2257,7 +2600,9 @@ html:has(dialog.case[open]) {
   .nav-indicator,
   .ph-window,
   .project-frame img,
-  .project-arrow {
+  .project-arrow,
+  .fan-card-inner,
+  .btn-arrow-chip {
     transition: none;
   }
 }

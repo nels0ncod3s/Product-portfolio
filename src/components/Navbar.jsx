@@ -1,49 +1,61 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import ThemeToggle from './ThemeToggle';
 
+// Order matters: it must match the order of the sections on the page, top to bottom.
 const links = [
+  { id: 'home', label: 'Home' },
   { id: 'work', label: 'Work' },
   { id: 'about', label: 'About' },
   { id: 'contact', label: 'Contact' },
 ];
 
 function Navbar({ ready }) {
-  const [active, setActive] = useState('work');
+  const [active, setActive] = useState('home');
   const [scrolled, setScrolled] = useState(false);
   const [pill, setPill] = useState({ x: 0, w: 0 });
   const itemRefs = useRef({});
 
-  // Highlight the section that crosses the middle of the viewport.
+  // Highlight the section you are in: the last one whose top has passed a line
+  // 40% down the screen. Re-checked on every scroll, so it stays right when
+  // scrolling up too (the hero counts as "home", the marquee as part of it).
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) setActive(entry.target.id);
-        });
-      },
-      { rootMargin: '-45% 0px -50% 0px' }
-    );
+    let raf = 0;
 
-    links.forEach(({ id }) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-
-    const onScroll = () => {
+    const update = () => {
+      raf = 0;
       // Past the top of the page, the bar condenses into the floating pill.
       setScrolled(window.scrollY > 40);
 
-      // The last section can end before it reaches mid-screen, so catch the bottom of the page.
+      const probe = window.innerHeight * 0.4;
+      let current = null;
+      let first = null;
+      links.forEach(({ id }) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        if (!first) first = id;
+        if (el.getBoundingClientRect().top <= probe) current = id;
+      });
+
+      // The last section can end before it reaches the line, so catch the bottom of the page.
       const atBottom =
         window.innerHeight + window.scrollY >= document.body.scrollHeight - 4;
-      if (atBottom) setActive('contact');
+      if (atBottom && document.getElementById('contact')) current = 'contact';
+
+      setActive(current ?? first ?? 'home');
     };
-    onScroll(); // covers a reload that restores a scrolled position
+
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+
+    update(); // covers a reload that restores a scrolled position
     window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
 
     return () => {
-      observer.disconnect();
       window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      if (raf) cancelAnimationFrame(raf);
     };
   }, []);
 

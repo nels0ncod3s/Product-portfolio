@@ -1,5 +1,6 @@
 // The photo comes from src/assets/me.* (see src/lib/photo.js): just drop a file
 // named "me" in that folder. No code changes needed.
+import waveImg from '../assets/wave.png';
 import { photo as PHOTO, fitRatio, usePhotoRatio } from '../lib/photo';
 
 function Hero({ ready }) {
@@ -12,7 +13,9 @@ function Hero({ ready }) {
         <span className="line" aria-hidden="true">
           <span className="line-inline" style={{ '--d': 0 }}>
             <span>Hi</span>
-            <span className="wave">👋</span>
+            <span className="wave">
+              <img src={waveImg} alt="" width="160" height="160" draggable="false" />
+            </span>
             <span
               className={`hero-photo ${PHOTO ? 'has-image' : ''}`}
               style={{ '--photo-ratio': ratio }}
